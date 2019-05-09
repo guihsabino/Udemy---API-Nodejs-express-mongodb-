@@ -1,0 +1,19 @@
+{
+  "name": "api_udemy",
+  "version": "1.0.0",
+  "description": "API criada para desenvolvimento do curso de Nodejs da Udemy",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guihsabino/Udemy---API-Nodejs-express-mongodb-.git"
+  },
+  "author": "Guilherme Sabino",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guihsabino/Udemy---API-Nodejs-express-mongodb-/issues"
+  },
+  "homepage": "https://github.com/guihsabino/Udemy---API-Nodejs-express-mongodb-#readme"
+}
