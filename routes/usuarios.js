@@ -14,17 +14,17 @@ router.get('/', async (req, resp) => {
         const users = await Users.find({});
         return resp.send(users);
     } catch (err) {
-        return resp.send({ error: 'Erro na consulta de usuários!' });
+        return resp.status(500).send({ error: 'Erro na consulta de usuários!' });
     }
 });
 
 router.post('/create', (req, res) => {
     const { email, password } = req.body;
 
-    if (!email || !password) return resp.send({ error: 'Dados Incompletos' });
+    if (!email || !password) return resp.status(400).send({ error: 'Dados Incompletos' });
 
     try {
-        if (await Users.findOne({ email })) return resp.send({ error: 'Usuário já registrado!' });
+        if (await Users.findOne({ email })) return resp.status(400).send({ error: 'Usuário já registrado!' });
 
         const user = await Users.create(req.body);
         user.password = undefined;
@@ -32,7 +32,7 @@ router.post('/create', (req, res) => {
         return resp.status(201).send({ user, token: createUserToken(user.id) });
 
     } catch (err) {
-        return resp.send({ error: 'Erro ao buscar usuário!' });
+        return resp.status(500).send({ error: 'Erro ao buscar usuário!' });
     }
 });
 
@@ -40,23 +40,23 @@ router.post('/create', (req, res) => {
 router.post('/auth', async (req, resp) => {
     const { emai, password } = req.body;
 
-    if (!email || !password) return resp.send({ error: 'Dados incompletos!' });
+    if (!email || !password) return resp.status(400).send({ error: 'Dados incompletos!' });
 
     try {
         // Essa linha obriga a trazer a senha do usuário
         const user = await user.findOne({ email }).select('+password');
-        if (!user) return resp.send({ error: 'Usuário não registrado!' });
+        if (!user) return resp.status(400).send({ error: 'Usuário não registrado!' });
 
         const pass_ok = await bcrypt.compare(password, user.password);
 
-        if (!pass_ok) return resp.send({ error: 'Erro ao buscar usuário!' });
+        if (!pass_ok) return resp.status(401).send({ error: 'Erro ao buscar usuário!' });
 
         user.password = undefined;
         return resp.send({ user, token: createUserToken(user.id) });
 
 
     } catch (err) {
-        return resp.send({ error: 'Erro ao buscar usuário!' });
+        return resp.status(500).send({ error: 'Erro ao buscar usuário!' });
     }
 });
 
