@@ -8,3 +8,9 @@ router.get('/', (req, resp) => {
 router.post('/', (req, resp) => {
     return resp.send({ message: 'Tudo ok com o método POST de usuários!' });
 });
+
+router.post('/create', (req, res) => {
+    return resp.send({ message: 'Seu usuário foi criado = ' });
+});
+
+module.exports = router;
