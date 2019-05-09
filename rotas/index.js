@@ -5,8 +5,16 @@ router.get('/', (req, resp) => {
     return resp.send({ message: 'Tudo ok com o método GET da raiz!' });
 });
 
+router.post('/', (req, resp) => {
+    return resp.send({ message: 'Tudo ok com o método POST da raiz!' });
+});
+
 router.get('/users', (req, resp) => {
     return resp.send({ message: 'Tudo ok com o método GET de usuários!' });
+});
+
+router.post('/users', (req, resp) => {
+    return resp.send({ message: 'Tudo ok com o método POST de usuários!' });
 });
 
 module.exports = router;
