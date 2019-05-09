@@ -8,15 +8,14 @@ const UserSchema = new Schema({
     created: { type: Date, default: Date.now }
 });
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre('save', async function (next) {
     // Se o usuário não for modificado, vida que segue
     let user = this;
     if (!user.isModified('password')) return next();
+
     // Se for modificado, criptografa a senha
-    bcrypt.hash(user.password, 10, (err, encrypted) => {
-        user.password = encrypted;
-        return next();
-    });
+    user.password = await bcrypt.hash(user.password, 10);
+    return next();
 });
 
 module.exports = mongoose.model('User', UserSchema);

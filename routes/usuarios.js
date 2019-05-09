@@ -3,11 +3,30 @@ const router = express.Router();
 const Users = require('../model/usuario');
 const bcrypt = require('bcrypt');
 
-router.get('/', (req, resp) => {
-    Users.find({}, (err, dados) => {
-        if (err) return resp.send({ error: 'Erro na consulta de usuários!' })
-        return resp.send(dados);
-    })
+router.get('/', async (req, resp) => {
+    try {
+        const users = await Users.find({});
+        return resp.send(users);
+    } catch (err) {
+        return resp.send({ error: 'Erro na consulta de usuários!' });
+    }
+});
+
+router.post('/create', (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) return resp.send({ error: 'Dados Incompletos' });
+
+    try {
+        if (await Users.findOne({ email })) return resp.send({ error: 'Usuário já registrado!' });
+
+        const user = await Users.create(req.body);
+        user.password = undefined;
+        return resp.send(user);
+
+    } catch (err) {
+        return resp.send({ error: 'Erro ao buscar usuário!' });
+    }
 });
 
 router.post('/create', (req, res) => {
@@ -33,7 +52,7 @@ router.post('/create', (req, res) => {
 router.post('/auth', (req, resp) => {
     const { emai, password } = req.body;
 
-    if (!email || !password) rturn resp.send({ error: 'Dados incompletos!' });
+    if (!email || !password) return resp.send({ error: 'Dados incompletos!' });
 
     Users.findOne({ email }, (err, dados) => {
         if (err) return resp.send({ error: 'Erro ao buscar usuário!' });
