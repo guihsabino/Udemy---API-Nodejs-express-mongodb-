@@ -18,7 +18,7 @@ router.get('/', async (req, resp) => {
     }
 });
 
-router.post('/create', (req, res) => {
+router.post('/create', (req, resp) => {
     const { email, password } = req.body;
 
     if (!email || !password) return resp.status(400).send({ error: 'Dados Incompletos' });
