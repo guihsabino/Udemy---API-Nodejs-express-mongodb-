@@ -28,8 +28,8 @@ mongoose.connect.on('connected', () => {
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const indexRoute = require('./rotas/index');
-const usersRoute = require('./rotas/index');
+const indexRoute = require('./routes/index');
+const usersRoute = require('./routes/index');
 
 app.use('/', indexRoute);
 app.use('/users', usersRoute);
