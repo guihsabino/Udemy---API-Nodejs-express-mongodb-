@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, resp) => {
-    return resp.send({ message: 'Tudo ok com o método GET!' })
+    let obj = req.query;
+    return resp.send({ message: `Você enviou o nome ${obj.nome} com idade de ${obj.idade} anos!` });
 });
 
 app.post('/', (req, resp) => {
