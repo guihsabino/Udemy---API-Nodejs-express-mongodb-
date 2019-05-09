@@ -20,6 +20,8 @@ router.post('/create', (req, res) => {
 
         Users.create(req.body, (err, dados) => {
             if (err) return resp.send({ error: 'Erro ao criar usuário!' });
+            
+            DataCue.password = undefined;
             return res.send(dados);
         })
     });
