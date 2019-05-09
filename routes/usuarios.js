@@ -29,43 +29,28 @@ router.post('/create', (req, res) => {
     }
 });
 
-router.post('/create', (req, res) => {
-    const { email, password } = req.body;
-
-    if (!email || !password) return resp.send({ error: 'Dados Incompletos' });
-
-    Users.findOne({ email }, (err, dados) => {
-        if (err) return resp.send({ error: 'Erro ao buscar usuário!' });
-        if (dados) return resp.send({ error: 'Usuário já registrado!' });
-
-        Users.create(req.body, (err, dados) => {
-            if (err) return resp.send({ error: 'Erro ao criar usuário!' });
-
-            DataCue.password = undefined;
-            return res.send(dados);
-        })
-    });
-
-});
-
 // Verificando a autenticação
-router.post('/auth', (req, resp) => {
+router.post('/auth', async (req, resp) => {
     const { emai, password } = req.body;
 
     if (!email || !password) return resp.send({ error: 'Dados incompletos!' });
 
-    Users.findOne({ email }, (err, dados) => {
-        if (err) return resp.send({ error: 'Erro ao buscar usuário!' });
-        if (!dados) return resp.send({ error: 'Usuário não registrado!' });
+    try {
+        // Essa linha obriga a trazer a senha do usuário
+        const user = await user.findOne({ email }).select('+password');
+        if (!user) return resp.send({ error: 'Usuário não registrado!' });
 
-        // Same valida se a senha bateu
-        bcrypt.compare(password, data.password, (er, same) => {
-            if (!same) return resp.send({ error: 'Erro ao autenticar usuário!' })
+        const pass_ok = await bcrypt.compare(password, user.password);
 
-            dados.password = undefined;
-            return resp.send(dados);
-        })
-    }).select('+password'); // Essa linha obriga a trazer a senha do usuário
+        if (!pass_ok) return resp.send({ error: 'Erro ao buscar usuário!' });
+
+        user.password = undefined;
+        return resp.send(user);
+
+
+    } catch (err) {
+        return resp.send({ error: 'Erro ao buscar usuário!' });
+    }
 });
 
 module.exports = router;
