@@ -10,13 +10,13 @@ const config = () => {
             jwt_expira_em: '1d'
         }
         case 'hml': return {
-            bd_string: 'mongodb+srv://admin_user:admin123@clusterapiudemy-s4efd.mongodb.net/test?retryWrites=true',
-            jwt_passw: 'batman2019',
+            bd_string: 'banco_homologacao',
+            jwt_passw: 'senhahomologacao',
             jwt_expira_em: '1d'
         }
         case 'prod': return {
-            bd_string: 'mongodb+srv://admin_user:admin123@clusterapiudemy-s4efd.mongodb.net/test?retryWrites=true',
-            jwt_passw: 'batman2019',
+            bd_string: 'banco_prod',
+            jwt_passw: 'senha_prod',
             jwt_expira_em: '1d'
         }
     }
